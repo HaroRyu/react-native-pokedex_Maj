@@ -16,7 +16,7 @@ export default function Index() {
   const { data, isFetching, fetchNextPage } = useInfiniteFetchQuery('/pokemon?limit=21');
   const [search, setSearch] = useState('');
   const pokemons = data?.pages.flatMap(page => page.results.map(r => ({name: r.name, id: getPokemonId(r.url)}))) ?? [];
-  const [sortKey, setSortKey] = useState<"id" | "name">("id");
+  const [sortKey, setSortKey] = useState<"id" | "name" | "id-desc" | "name-desc">("id");
   const filteredPokemons = [
     ...(search 
       ? pokemons.filter(
@@ -25,7 +25,20 @@ export default function Index() {
           p.id.toString() == search
         )
       : pokemons
-  )].sort((a, b) => (a[sortKey] < b[sortKey] ? -1 : 1));
+  )].sort((a, b) => {
+    switch (sortKey) {
+      case "id":
+        return a.id - b.id;
+      case "id-desc":
+        return b.id - a.id;
+      case "name":
+        return a.name.localeCompare(b.name);
+      case "name-desc":
+        return b.name.localeCompare(a.name);
+      default:
+        return 0;
+    }
+  });
 
   return (
     <RootView>

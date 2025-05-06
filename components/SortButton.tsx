@@ -8,13 +8,15 @@ import { Radio } from "./Radio";
 import { Shadows } from "@/constants/Shadows";
 
 type Props = {
-    value: "id" | "name",
+    value: "id" | "name" | "id-desc" | "name-desc",
     onChange: (v: "id" | "name") => void
 }
 
 const options = [
     {label: "Number", value: "id" },
-    {label: "Name", value: "name" }
+    {label: "Name", value: "name" },
+    {label: "Invert Num", value: "id-desc" },
+    {label: "Invert Name", value: "name-desc"}
 ] as const;
 
 export function SortButton({ value, onChange }: Props) {
@@ -46,7 +48,7 @@ export function SortButton({ value, onChange }: Props) {
                 >
                     <Image
                         source={
-                            value == "id"
+                            value.startsWith("id")
                                 ? require("@/assets/images/number.png")
                                 : require("@/assets/images/alpha.png")
                         }
