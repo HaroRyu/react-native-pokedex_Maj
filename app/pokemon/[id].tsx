@@ -6,11 +6,12 @@ import { RootView } from "@/components/RootView";
 import { Row } from "@/components/Row";
 import { ThemedText } from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
-import { formatSize, formatWeight, getPokemonArtwork } from "@/functions/pokemon";
+import { formatSize, formatWeight, getPokemonArtwork, getPokemonArtworkShiny } from "@/functions/pokemon";
 import { useFetchQuery } from "@/hooks/useFetchQuery";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { router, useLocalSearchParams } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
 
 export default function Pokemon() {
     const colors = useThemeColors();
@@ -20,6 +21,7 @@ export default function Pokemon() {
     const mainType = pokemon?.types?.[0].type.name;
     const colorType = mainType ? Colors.type[mainType] : colors.tint;
     const types = pokemon?.types ?? [];
+    const [showShiny, setShowShiny] = useState(false);
     const bio = species?.flavor_text_entries
         ?.find(({ language }) => language.name == "en")
         ?.flavor_text.replaceAll("\n", " ");
@@ -60,7 +62,9 @@ export default function Pokemon() {
                     <Image
                         style={styles.artwork}
                         source={{
-                            uri: getPokemonArtwork(params.id)
+                            uri: showShiny
+                                ? getPokemonArtworkShiny(params.id)
+                                : getPokemonArtwork(params.id),
                         }}
                         width={200}
                         height={200}
@@ -121,6 +125,22 @@ export default function Pokemon() {
                                 />
                             ))}
                         </View>
+                        <Pressable
+                            onPress={() => setShowShiny(!showShiny)}
+                            style={{
+                                backgroundColor: colorType,
+                                paddingVertical: 10,
+                                paddingHorizontal: 20,
+                                borderRadius: 8,
+                                alignItems: "center",
+                                marginTop: 16,
+                                alignSelf: "stretch"
+                            }}
+                        >
+                            <Text style={{ color: "#fff", textAlign: "center" }}>
+                                {showShiny ? "Show Normal" : "Show Shiny"}
+                            </Text>
+                        </Pressable>
                         <Row gap={16} style={{ marginTop: 16 }}>
                             <Pressable
                                 onPress={() => {
@@ -145,7 +165,7 @@ export default function Pokemon() {
                                 router.replace(`/pokemon/${nextId}`);
                                 }}
                                 style={{
-                                backgroundColor: colorType,
+                                backgroundColor: colors.grayLight,
                                 paddingVertical: 10,
                                 paddingHorizontal: 20,
                                 borderRadius: 8,

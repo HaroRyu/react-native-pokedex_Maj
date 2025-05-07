@@ -6,6 +6,10 @@ export function getPokemonArtwork(id: number | string): string {
     return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
 }
 
+export function getPokemonArtworkShiny(id: number | string): string {
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${id}.png`;
+}
+
 export function formatWeight(weight?: number): string {
     if (!weight) {
         return "";
