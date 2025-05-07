@@ -121,6 +121,41 @@ export default function Pokemon() {
                                 />
                             ))}
                         </View>
+                        <Row gap={16} style={{ marginTop: 16 }}>
+                            <Pressable
+                                onPress={() => {
+                                const prevId = Math.max(1, Number(params.id) - 1);
+                                router.replace(`/pokemon/${prevId}`);
+                                }}
+                                style={{
+                                backgroundColor: colors.grayLight,
+                                paddingVertical: 10,
+                                paddingHorizontal: 20,
+                                borderRadius: 8,
+                                flex: 1,
+                                alignItems: "center"
+                                }}
+                            >
+                                <Text style={{ color: "#fff" }}>Précédent</Text>
+                            </Pressable>
+
+                            <Pressable
+                                onPress={() => {
+                                const nextId = Number(params.id) + 1;
+                                router.replace(`/pokemon/${nextId}`);
+                                }}
+                                style={{
+                                backgroundColor: colorType,
+                                paddingVertical: 10,
+                                paddingHorizontal: 20,
+                                borderRadius: 8,
+                                flex: 1,
+                                alignItems: "center"
+                                }}
+                            >
+                                <Text style={{ color: "#fff" }}>Next</Text>
+                            </Pressable>
+                        </Row>
                     </Card>
                 </View>
             </View>
@@ -153,6 +188,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingTop: 60,
         paddingBottom: 20,
+        height: 600,
         gap: 16,
         alignItems: "center",
     }
