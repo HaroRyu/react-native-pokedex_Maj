@@ -9,7 +9,7 @@ import { Shadows } from "@/constants/Shadows";
 
 type Props = {
     value: "id" | "name" | "id-desc" | "name-desc",
-    onChange: (v: "id" | "name") => void
+    onChange: (v: "id" | "name" | "id-desc" | "name-desc") => void
 }
 
 const options = [
